@@ -1,8 +1,8 @@
-# 修正履歴
+# edit history
 
 - 2024/02/18 create
 
-# このページについて
+# about this page
 welcome to my website.
 
 i will show you several kinds about program in this place.
@@ -17,6 +17,6 @@ thank you!
 |---|---|---|---|---|
 |about levenstein distance|math, algorithm, program|`leven stein distance`|`preparing`|`finish to create`|
 
-# 連絡先
+# contact
 
 - Email: `y1.developer.1(a)gmail.com`
