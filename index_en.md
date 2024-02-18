@@ -1,24 +1,22 @@
-# Edit history
+# 修正履歴
 
-- 2023/11/15 create this page
+- 2024/02/18 create
 
-# About this page
-Thank you for your comming.
+# このページについて
+welcome to my website.
 
-I write programs.
+i will show you several kinds about program in this place.
 
-I will show programs with ideas here.
+i accept messages about my pages.
 
-I accept your responses, opinions, messages by email, x(twitter), etc.
+thank you!
 
-# Programs, ideas
+# brief topics
 
-|about|idea|program|state|description|
+|title|what|keywords|state|process|
 |---|---|---|---|---|
-Interval Analysis|[link](./ianalysis.html)|link|developing|I write Interval Analysis as validation of numerical computation|
-|Automated Differential by Dual numbers|[link](./dualdif.html)|link|developing|I implement differentation of mathematical functions using dual numbers|
+|about levenstein distance|math, algorithm, program|`leven stein distance`|`preparing`|`finish to create`|
 
-# Contact
+# 連絡先
 
-- Email: y1.developer.1(atmark)gmail.com
-- Threads: 
+- Email: `y1.developer.1(a)gmail.com`

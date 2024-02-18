@@ -1,3 +1,5 @@
+[インデックスに戻る](./index_ja.md)
+
 <script type="text/javascript" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-MML-AM_CHTML">
 </script>
 <script type="text/x-mathjax-config">
@@ -10,7 +12,7 @@
 </script>
 
 # 修正履歴
-- 2024/02/12 新規作成
+- 2024/02/18 新規作成
 
 # このページについて
 このページは**レーベンシュタイン距離**の理論、プログラムについて私なりに説明しています。
@@ -229,3 +231,5 @@ def maximum(values:list)->int:
             maximum_value = value
     return maximum_value
 ```
+
+[インデックスに戻る](./index_ja.md)
