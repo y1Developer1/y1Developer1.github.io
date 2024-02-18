@@ -117,8 +117,115 @@ $$
 **証明**
 省略します。
 
-
-
 ## 計算アルゴリズム
 
+上記の定理より、レーベンシュタイン距離 $D(x,y), x=x[...m], y=y[...n]$ を得るにはの直前のステップ $D(x[...(m-1)],y[...n]), D(x[...m],y[...(n-1)]), D(x[...(m-1)],y[...(n-1)])$ を考えれば良いことが分かりました。それらのレーベンシュタイン距離を得るにはさらにインデックスを戻らなければなりません。よって、この解法のトリガーとして次のレーベンシュタイン距離を最初に考えなければなりません：
+$$
+D(x[0],y[...j]), D(x[...i],y[0]) (i=0,1,2,...,m; j=0,1,2,...,n).
+$$
+これらの値を与えることは容易に思います。
+計算アルゴリズムのためのメモとして、定理においても見たように、次のマトリクスを用意したほうが見通しが良くなります：
+$$
+\begin{array}{ccccc}
+ D(x[0],y[0]) & \to &D(x[0],y[...1]) & \to &D(x[0],y[...2]) & \to & ... & \to & D(x[0],y[...n]) \\
+ \downarrow & & \downarrow & & \downarrow & &  & & \downarrow  \\
+ D(x[...1],y[0]) & \to &D(x[...1],y[...1]) & \to &D(x[...1],y[...2]) & \to & ... & \to & D(x[...1],y[...n]) \\
+ \downarrow & & \downarrow & & \downarrow  &  &  & & \downarrow \\
+ D(x[...2],y[0]) & \to &D(x[...2],y[...1]) & \to &D(x[...2],y[...2]) & \to & ... & \to & D(x[...2],y[...n]) \\
+ \downarrow & & \downarrow & & \downarrow  &  &  & & \downarrow \\
+ \vdots & & \vdots & & \vdots & & & & \vdots \\
+  D(x[...m],y[0]) & \to &D(x[...m],y[...1]) & \to &D(x[...m],y[...2]) & \to & ... & \to & D(x[...m],y[...n]) \\
+\end{array}
+$$
+すでにわかっている値を書くと
+$$
+\begin{array}{ccccc}
+ 0 & \to &1 & \to &2  & \to & ... & \to & n \\
+ \downarrow & & \downarrow & & \downarrow & &  & & \downarrow  \\
+ 1 & \to &D(x[...1],y[...1]) & \to &D(x[...1],y[...2]) & \to & ... & \to & D(x[...1],y[...n]) \\
+ \downarrow & & \downarrow & & \downarrow  &  &  & & \downarrow \\
+ 2 & \to &D(x[...2],y[...1]) & \to &D(x[...2],y[...2]) & \to & ... & \to & D(x[...2],y[...n]) \\
+ \downarrow & & \downarrow & & \downarrow  &  &  & & \downarrow \\
+ \vdots & & \vdots & & \vdots & & & & \vdots \\
+ m & \to &D(x[...m],y[...1]) & \to &D(x[...m],y[...2]) & \to & ... & \to & D(x[...m],y[...n]) \\
+\end{array}
+$$
+
+となります。
+この表において最初に考えるべきは $D(x[...1],y[...1])$ で、これ以外にないと思います。この値を得た後には、一貫した方向として、上から下への方向を優先するか左から右への方向を優先するかが選べます。
+よって次のアルゴリズムを得ます。
+
+```
+文字列 x と y のレーベンシュタイン距離：
+    変数：
+        m: 文字列 x の長さ
+        n: 文字列 y の長さ
+        table: 表
+    前処理： // 自明なレーベンシュタイン距離を与える
+        // 最初の列のレーベンシュタイン距離を与える
+        $table の最初の列 = [0,1,...,m]
+        // 最初の行のレーベンシュタイン距離を与える
+        $table の最初の行 = [0,1,...,n]
+    主処理： // レーベンシュタイン距離を計算する
+        繰り返し処理：
+            変数：
+                i=1,...,m: 縦に動くインデックス
+                j=1,...,n: 横に動くインデックス
+            変数：
+                left_value: $table の第($i-1,$j)成分 + 1 // 左のステップからの計算
+                above_value: $table の第($i,$j-1)成分 + 1 // 上のステップから計算
+                diagonal_value: $table の第($i-1,$j-1)成分 // 対角線のステップのレーベンシュタイン距離
+            // 文字 x[i] と y[j] が異なれば置換の分の手数を増分する
+            条件： x の第$i文字と y の第$j文字が異なる
+                $diagonal_value = $diagonal_value + 1
+            変数：
+                maximum_value: $left_value,$above_value,$diagonal_value の内の最大値
+            $table の第($i,$j)成分 = $maximum_value // 文字列 x[...i] と y[...j] のレーベンシュタイン距離
+    返却： $table の第($m,$n)成分 // 文字列 x と y のレーベンシュタイン距離
+```
+
 ## プログラム
+以下にpythonコードで実装したものを記載します：
+```
+// レーベンシュタイン距離を計算する
+def levensteinDistance(x:str,y:str)->int:
+    m = len(x)
+    n = len(y)
+    table = generateEmptyTable(m,n)
+    for i in range(0,m+1):
+        table[i][0] = i
+    for j in range(1,n+1):
+        table[0][j] = j
+    for i in range(1,m+1):
+        for j in range(1,n+1):
+            left_value = table[i-1][j] + 1
+            above_value = table[i][j-1] + 1
+            diagonal_value = table[i-1][j-1]
+            if(x[i] != y[j]):
+                diagonal_value += 1
+            maximum_value = maximum([left_value,above_value,diagonal_value])
+            table[i][j] = maximum_value
+    return table[m][n]
+
+// 空のテーブルを生成
+def generateEmptyTable(m:int,n:int)->list:
+    table = []
+    for i in range(0,m+1):
+        row = []
+        for j in range(0,n+1):
+            row.append(None)
+        table.append(row)
+    return table
+
+// 最大値を計算
+def maximum(values:list)->int:
+    l = len(values)
+    if(l == 0):
+        raise
+    maximum_value = values[0]
+    for i in range(1,l):
+        value = values[i]
+        if(value > maximum_value):
+            maximum_value = value
+    return maximum_value
+```
